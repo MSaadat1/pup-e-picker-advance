@@ -1,4 +1,15 @@
 import { ReactNode } from "react";
+//import { Dog } from "../types";
+import { useDogCards } from "../providers/DogCardsProvider";
+
+// type SectionContextType = {
+//   dogsList: TDogList[];
+//   currentView: TActiveTab;
+//   handleFavoriteDogs: (id: number, isFavorite: boolean) => void;
+//   handleCreateDogs: (dogs: Omit<Dog, "id">) => void;
+//    children: React.ReactNode;
+//   label: string;
+// };
 
 export const Section = ({
   label,
@@ -8,6 +19,10 @@ export const Section = ({
   label: string;
   children: ReactNode;
 }) => {
+  const { dogsList, currentView, setCurrentView } =
+    useDogCards();
+  const favoritedDogsCount = dogsList["favorite"].length;
+  const unfavoritedDogsCount = dogsList["unfavorite"].length;
   return (
     <section id="main-section">
       <div className="container-header">
@@ -15,28 +30,26 @@ export const Section = ({
         <div className="selectors">
           {/* This should display the favorited count */}
           <div
-            className={`selector ${"active"}`}
-            onClick={() => {
-              alert("click favorited");
-            }}
+            className={`selector ${currentView === "favorite" ? "active" : ""}`}
+            onClick={() => setCurrentView("favorite")}
           >
-            favorited ( {0} )
+            favorited ( {favoritedDogsCount} )
           </div>
 
           {/* This should display the unfavorited count */}
           <div
-            className={`selector ${""}`}
-            onClick={() => {
-              alert("click unfavorited");
-            }}
+            className={`selector ${
+              currentView === "unfavorite" ? "active" : ""
+            }`}
+            onClick={() => setCurrentView("unfavorite")}
           >
-            unfavorited ( {10} )
+            unfavorited ( {unfavoritedDogsCount} )
           </div>
           <div
-            className={`selector ${""}`}
-            onClick={() => {
-              alert("clicked create dog");
-            }}
+            className={`selector ${
+              currentView === "createDog" ? "active" : ""
+            }`}
+            onClick={() => setCurrentView("createDog")}
           >
             create dog
           </div>
@@ -46,3 +59,6 @@ export const Section = ({
     </section>
   );
 };
+
+
+//: React.FC<SectionContextType>
