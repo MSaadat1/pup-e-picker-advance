@@ -1,15 +1,6 @@
 import { ReactNode } from "react";
 //import { Dog } from "../types";
-import { useDogCards } from "../providers/DogCardsProvider";
-
-// type SectionContextType = {
-//   dogsList: TDogList[];
-//   currentView: TActiveTab;
-//   handleFavoriteDogs: (id: number, isFavorite: boolean) => void;
-//   handleCreateDogs: (dogs: Omit<Dog, "id">) => void;
-//    children: React.ReactNode;
-//   label: string;
-// };
+import { TActiveTab, useDogCards } from "../providers/DogCardsProvider";
 
 export const Section = ({
   label,
@@ -19,10 +10,14 @@ export const Section = ({
   label: string;
   children: ReactNode;
 }) => {
-  const { dogsList, currentView, setCurrentView } =
-    useDogCards();
-  const favoritedDogsCount = dogsList["favorite"].length;
-  const unfavoritedDogsCount = dogsList["unfavorite"].length;
+  const { dogsList, currentView, setCurrentView } = useDogCards();
+
+  const handleActiveTab = (tab: TActiveTab)=>{
+    const nextView = tab === currentView ? "all" : tab;
+    setCurrentView(nextView)
+  }
+  const favoritedDogsCount = dogsList["favorite"].length ;
+  const unfavoritedDogsCount = dogsList["unfavorite"].length ;
   return (
     <section id="main-section">
       <div className="container-header">
@@ -31,7 +26,7 @@ export const Section = ({
           {/* This should display the favorited count */}
           <div
             className={`selector ${currentView === "favorite" ? "active" : ""}`}
-            onClick={() => setCurrentView("favorite")}
+            onClick={() => handleActiveTab("favorite")}
           >
             favorited ( {favoritedDogsCount} )
           </div>
@@ -41,7 +36,7 @@ export const Section = ({
             className={`selector ${
               currentView === "unfavorite" ? "active" : ""
             }`}
-            onClick={() => setCurrentView("unfavorite")}
+            onClick={() => handleActiveTab("unfavorite")}
           >
             unfavorited ( {unfavoritedDogsCount} )
           </div>
@@ -49,7 +44,7 @@ export const Section = ({
             className={`selector ${
               currentView === "createDog" ? "active" : ""
             }`}
-            onClick={() => setCurrentView("createDog")}
+            onClick={() => handleActiveTab("createDog")}
           >
             create dog
           </div>
@@ -60,5 +55,3 @@ export const Section = ({
   );
 };
 
-
-//: React.FC<SectionContextType>

@@ -11,19 +11,13 @@ import { Dog } from "../types";
 import { Requests } from "../api";
 import toast from "react-hot-toast";
 
-// export type TDogList = {
-//   all: Dog[];
-//   favorite: Dog[];
-//   unfavorite: Dog[];
-//   createDog: Dog[];
-// };
-
 export type TdogCardProvider = {
   isLoading: boolean;
   favoriteDogs: Dog[];
   unfavoriteDogs: Dog[];
   currentView: TActiveTab;
-  setCurrentView:  Dispatch<SetStateAction<TActiveTab>>;
+  createDog: (dog: Omit<Dog, "id">) => Promise<unknown>
+  setCurrentView: Dispatch<SetStateAction<TActiveTab>>;
   handleFavoriteDogs: (id: number, isFavorite: boolean) => void;
   handleDeleteDogs: (id: number) => void;
   handleCreateDogs: (dogs: Omit<Dog, "id">) => void;
@@ -58,13 +52,15 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
     refetchData();
   }, []);
 
+  
+
   const handleFavoriteDogs = (id: number, isFavorite: boolean): void => {
     setIsLoading(true);
     setDogCard((preView) =>
       preView.map((dog) => (dog.id === id ? { ...dog, isFavorite } : dog))
     );
     Requests.patchFavoriteForDog(id, {
-      isFavorite: isFavorite,
+      isFavorite,
     })
       .then(() => {
         toast.success("The dog card was updated!");
@@ -82,17 +78,16 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
-  
-
   const handleDeleteDogs = (id: number) => {
     setIsLoading(true);
+    const prevDogs = [...dogCard];
     setDogCard((prevDogs) => prevDogs.filter((dog) => dog.id !== id));
     Requests.deleteDogRequest(id)
       .then(() => {
         toast.success("The dog card was deleted!");
       })
       .catch(() => {
-        setDogCard(dogCard);
+        setDogCard(prevDogs);
         toast.error("Fail to delete the dog card!");
       })
       .finally(() => {
@@ -103,9 +98,10 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
   const handleCreateDogs = (dogs: Omit<Dog, "id">) => {
     setIsLoading(true);
     Requests.postDog(dogs)
-      .then(() => refetchData())
+      //.then(() => refetchData())
       .then(() => {
         toast.success("The dog was created successfully!");
+        refetchData();
       })
       .catch(() => {
         toast.error("Failed to create the dog!");
@@ -132,6 +128,7 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
     handleDeleteDogs,
     handleCreateDogs,
     dogsList,
+    createDog,
   };
   return (
     <DogCardContext.Provider value={value}>{children}</DogCardContext.Provider>
