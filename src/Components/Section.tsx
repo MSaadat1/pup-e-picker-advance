@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-//import { Dog } from "../types";
 import { TActiveTab, useDogCards } from "../providers/DogCardsProvider";
 
 export const Section = ({

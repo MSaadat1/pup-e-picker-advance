@@ -1,13 +1,13 @@
 //import { useContext } from "react";
 import { Section } from "./Components/Section";
-import { DogCardsProvider, useDogCards } from "./providers/DogCardsProvider";
+import {  useDogCards } from "./providers/DogCardsProvider";
 import { CreateDogForm } from "./Components/CreateDogForm";
 import { Dogs } from "./Components/Dogs";
 
 export function App() {
   const { currentView } = useDogCards();
   return (
-    <DogCardsProvider>
+    
       <div className="App" style={{ backgroundColor: "skyblue" }}>
         <header>
           <h1>pup-e-picker (Functional)</h1>
@@ -16,6 +16,6 @@ export function App() {
           {currentView === "createDog" ? <CreateDogForm /> : <Dogs />}
         </Section>
       </div>
-    </DogCardsProvider>
+   
   );
 }

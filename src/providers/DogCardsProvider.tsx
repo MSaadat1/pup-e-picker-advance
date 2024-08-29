@@ -16,11 +16,10 @@ export type TdogCardProvider = {
   favoriteDogs: Dog[];
   unfavoriteDogs: Dog[];
   currentView: TActiveTab;
-  createDog: (dog: Omit<Dog, "id">) => Promise<unknown>
   setCurrentView: Dispatch<SetStateAction<TActiveTab>>;
   handleFavoriteDogs: (id: number, isFavorite: boolean) => void;
   handleDeleteDogs: (id: number) => void;
-  handleCreateDogs: (dogs: Omit<Dog, "id">) => void;
+  handleCreateDogs: (dogs: Omit<Dog, "id">) => Promise<void>;
   dogsList: Record<TActiveTab, Dog[]>;
 };
 
@@ -52,14 +51,12 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
     refetchData();
   }, []);
 
-  
-
-  const handleFavoriteDogs = (id: number, isFavorite: boolean): void => {
+  const handleFavoriteDogs = (id: number, isFavorite: boolean) => {
     setIsLoading(true);
     setDogCard((preView) =>
       preView.map((dog) => (dog.id === id ? { ...dog, isFavorite } : dog))
     );
-    Requests.patchFavoriteForDog(id, {
+     return Requests.patchFavoriteForDog(id, {
       isFavorite,
     })
       .then(() => {
@@ -95,10 +92,9 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
-  const handleCreateDogs = (dogs: Omit<Dog, "id">) => {
+  const handleCreateDogs = (dogs: Omit<Dog, "id">)=> {
     setIsLoading(true);
     Requests.postDog(dogs)
-      //.then(() => refetchData())
       .then(() => {
         toast.success("The dog was created successfully!");
         refetchData();
@@ -128,7 +124,6 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
     handleDeleteDogs,
     handleCreateDogs,
     dogsList,
-    createDog,
   };
   return (
     <DogCardContext.Provider value={value}>{children}</DogCardContext.Provider>

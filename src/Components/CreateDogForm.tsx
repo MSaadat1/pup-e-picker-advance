@@ -7,12 +7,17 @@ export const CreateDogForm = () =>
   // no props allowed
   {
     const [selectedImage, setSelectedImage] = useState(dogPictures.BlueHeeler);
+    const [dogName, setDogName] = useState("");
+    const [dogPicture, setDogPicture] = useState(dogPictures.BlueHeeler);
+    const [dogDescription, setDogDescription] = useState("");
 
-    const [dogName, setDogName] = useState<string>("");
-    const [dogPicture, setDogPicture] = useState<string>(selectedImage);
-    const [dogDescription, setDogDescription] = useState<string>("");
+    const { isLoading, handleCreateDogs } = useDogCards();
 
-    const { isLoading, createDog } = useDogCards();
+    const reset: () => void = () => {
+      setDogName("");
+      setDogDescription("");
+      setDogPicture(selectedImage);
+    };
 
     return (
       <form
@@ -20,16 +25,14 @@ export const CreateDogForm = () =>
         id="create-dog-form"
         onSubmit={(e) => {
           e.preventDefault();
-          createDog({
+          handleCreateDogs({
             name: dogName,
             image: dogPicture,
             description: dogDescription,
             isFavorite: false,
           })
             .then(() => {
-              setDogName("");
-              setDogDescription("");
-              setDogPicture(selectedImage);
+              reset();
             })
             .catch(() => toast.error("Could not create new Dog!"));
         }}
@@ -40,7 +43,7 @@ export const CreateDogForm = () =>
           type="text"
           disabled={isLoading}
           value={dogName}
-          onChange={() => {
+          onChange={(e) => {
             setDogName(e.target.value);
           }}
         />
