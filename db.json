@@ -11,14 +11,14 @@
       "name": "Buddy",
       "image": "/assets/chihuahua.avif",
       "description": "Future payment Colorado olive digital nonconforming ick magenta",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 1
     },
     {
       "name": "Caitlyn",
       "image": "/assets/corgi.png",
       "description": "South Mazda East North Health omnis Savings",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 2
     },
     {
@@ -32,7 +32,7 @@
       "name": "Linnie",
       "image": "/assets/dalmation.png",
       "description": "Latin target farad PNG comfortable",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 4
     },
     {
@@ -67,14 +67,14 @@
       "name": "Otilia",
       "image": "/assets/chihuahua.avif",
       "description": "Metrics Jazz compelling International Flatley",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 9
     },
     {
       "name": "Paris",
       "image": "/assets/corgi.png",
       "description": "Borders Savings Bicycle Avon sky Chips reboot Bicycle",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 10
     },
     {
@@ -88,21 +88,21 @@
       "name": "Oma",
       "image": "/assets/corgi.png",
       "description": "Hybrid Virginia bypass Kina over Pizza Directives",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 12
     },
     {
       "name": "Beatrice",
       "image": "/assets/blue-heeler.png",
       "description": "Borders payment Fresh Pants hilarious extensible Classical yowza",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 13
     },
     {
       "name": "Horace",
       "image": "/assets/dalmation.png",
       "description": "Tellurium duh Minivan Cambridgeshire disintermediate wrap Cyclocross payment",
-      "isFavorite": true,
+      "isFavorite": false,
       "id": 14
     },
     {
@@ -130,7 +130,7 @@
       "name": "Maggie",
       "image": "/assets/blue-heeler.png",
       "description": "panel Tricycle line explicit indeed",
-      "isFavorite": false,
+      "isFavorite": true,
       "id": 18
     },
     {
@@ -141,9 +141,9 @@
       "id": 19
     },
     {
-      "name": "Alice",
-      "image": "/assets/blue-heeler.png",
-      "description": "Alice is a nice dog!",
+      "name": "Tonny",
+      "image": "/assets/corgi.png",
+      "description": "Tonny can be a guard dog!",
       "isFavorite": false,
       "id": 20
     }

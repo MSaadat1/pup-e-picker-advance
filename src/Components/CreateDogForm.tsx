@@ -8,15 +8,14 @@ export const CreateDogForm = () =>
   {
     const [selectedImage, setSelectedImage] = useState(dogPictures.BlueHeeler);
     const [dogName, setDogName] = useState("");
-    const [dogPicture, setDogPicture] = useState(dogPictures.BlueHeeler);
     const [dogDescription, setDogDescription] = useState("");
 
     const { isLoading, handleCreateDogs } = useDogCards();
 
-    const reset: () => void = () => {
+    const reset = () => {
       setDogName("");
       setDogDescription("");
-      setDogPicture(selectedImage);
+      setSelectedImage(dogPictures.BlueHeeler);
     };
 
     return (
@@ -27,7 +26,7 @@ export const CreateDogForm = () =>
           e.preventDefault();
           handleCreateDogs({
             name: dogName,
-            image: dogPicture,
+            image: selectedImage,
             description: dogDescription,
             isFavorite: false,
           })
@@ -65,6 +64,7 @@ export const CreateDogForm = () =>
           onChange={(e) => {
             setSelectedImage(e.target.value);
           }}
+          value={selectedImage}
         >
           {Object.entries(dogPictures).map(([label, pictureValue]) => {
             return (

@@ -7,7 +7,6 @@ export const Dogs = () =>
   {
     const {
       dogsList,
-      isLoading,
       currentView,
       handleFavoriteDogs,
       handleDeleteDogs,
@@ -26,7 +25,7 @@ export const Dogs = () =>
               onTrashIconClick={() => handleDeleteDogs(id)}
               onEmptyHeartClick={() => handleFavoriteDogs(id, !isFavorite)}
               onHeartClick={() => handleFavoriteDogs(id, !isFavorite)}
-              isLoading={isLoading}
+              isLoading={false}
             />
           );
         })}

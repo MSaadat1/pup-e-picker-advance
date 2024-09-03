@@ -11,11 +11,12 @@ import { Dog } from "../types";
 import { Requests } from "../api";
 import toast from "react-hot-toast";
 
-export type TdogCardProvider = {
+export type TDogCardProvider = {
   isLoading: boolean;
-  favoriteDogs: Dog[];
-  unfavoriteDogs: Dog[];
   currentView: TActiveTab;
+  favoritedDogsCount: number;
+  unfavoritedDogsCount: number;
+  handleActiveTab:(tab: TActiveTab) => void;
   setCurrentView: Dispatch<SetStateAction<TActiveTab>>;
   handleFavoriteDogs: (id: number, isFavorite: boolean) => void;
   handleDeleteDogs: (id: number) => void;
@@ -25,7 +26,7 @@ export type TdogCardProvider = {
 
 export type TActiveTab = "all" | "favorite" | "unfavorite" | "createDog";
 
-const DogCardContext = createContext<TdogCardProvider>({} as TdogCardProvider);
+const DogCardContext = createContext({} as TDogCardProvider);
 
 export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
   const [dogCard, setDogCard] = useState<Dog[]>([]);
@@ -51,12 +52,13 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
     refetchData();
   }, []);
 
+  
+
   const handleFavoriteDogs = (id: number, isFavorite: boolean) => {
-    setIsLoading(true);
     setDogCard((preView) =>
       preView.map((dog) => (dog.id === id ? { ...dog, isFavorite } : dog))
     );
-     return Requests.patchFavoriteForDog(id, {
+    return Requests.patchFavoriteForDog(id, {
       isFavorite,
     })
       .then(() => {
@@ -69,32 +71,25 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
           )
         );
         toast.error("Failed to update the dog card!");
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 
   const handleDeleteDogs = (id: number) => {
-    setIsLoading(true);
     const prevDogs = [...dogCard];
     setDogCard((prevDogs) => prevDogs.filter((dog) => dog.id !== id));
-    Requests.deleteDogRequest(id)
+    return Requests.deleteDogRequest(id)
       .then(() => {
         toast.success("The dog card was deleted!");
       })
       .catch(() => {
         setDogCard(prevDogs);
         toast.error("Fail to delete the dog card!");
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 
-  const handleCreateDogs = (dogs: Omit<Dog, "id">)=> {
+  const handleCreateDogs = (dogs: Omit<Dog, "id">) => {
     setIsLoading(true);
-    Requests.postDog(dogs)
+    return Requests.postDog(dogs)
       .then(() => {
         toast.success("The dog was created successfully!");
         refetchData();
@@ -114,12 +109,18 @@ export const DogCardsProvider = ({ children }: { children: ReactNode }) => {
     createDog: [],
   };
 
+  const handleActiveTab = (tab: TActiveTab)=>{
+    const nextView = tab === currentView ? "all" : tab;
+    setCurrentView(nextView)
+  }
+
   const value = {
     isLoading,
     currentView,
     setCurrentView,
-    favoriteDogs,
-    unfavoriteDogs,
+    handleActiveTab,
+    favoritedDogsCount: favoriteDogs.length,
+    unfavoritedDogsCount: unfavoriteDogs.length,
     handleFavoriteDogs,
     handleDeleteDogs,
     handleCreateDogs,

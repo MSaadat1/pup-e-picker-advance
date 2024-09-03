@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { TActiveTab, useDogCards } from "../providers/DogCardsProvider";
+import { useDogCards } from "../providers/DogCardsProvider";
 
 export const Section = ({
   label,
@@ -9,14 +9,10 @@ export const Section = ({
   label: string;
   children: ReactNode;
 }) => {
-  const { dogsList, currentView, setCurrentView } = useDogCards();
+  const { favoritedDogsCount, unfavoritedDogsCount, currentView, setCurrentView, handleActiveTab } = useDogCards();
 
-  const handleActiveTab = (tab: TActiveTab)=>{
-    const nextView = tab === currentView ? "all" : tab;
-    setCurrentView(nextView)
-  }
-  const favoritedDogsCount = dogsList["favorite"].length ;
-  const unfavoritedDogsCount = dogsList["unfavorite"].length ;
+  
+  
   return (
     <section id="main-section">
       <div className="container-header">
